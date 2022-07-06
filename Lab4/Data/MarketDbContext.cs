@@ -1,4 +1,4 @@
-﻿using Lab4.Models;
+using Lab4.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lab4.Data
@@ -19,6 +19,8 @@ namespace Lab4.Data
             {
                 modelBuilder.Entity<Client>().ToTable("clients");
                 modelBuilder.Entity<Brokerage>().ToTable("brokerages");
+                modelBuilder.Entity<Subscription>().ToTable("subscriptions");
+                /* composite key decleration */
                 modelBuilder.Entity<Subscription>().HasKey(c => new { c.ClientId, c.BrokerageId });
            
 
