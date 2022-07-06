@@ -1,4 +1,4 @@
-﻿@model Lab4.Models.ViewModels.BrokerageViewModel
+@model Lab4.Models.ViewModels.BrokerageViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -33,6 +33,7 @@
                 @Html.DisplayFor(modelItem => item.Fee)
             </td>
             <td>
+                <a asp-action="Index" asp-route-id="@item.Id">Select</a> |
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
@@ -41,3 +42,30 @@
 }
     </tbody>
 </table>
+@if (Model.Clients != null)
+{
+    <h3>
+        Subscribers to the brokerage
+    </h3>
+    <table class="table">
+        <tr>
+            @if (Model.Clients.Count() > 0)
+            {
+                <th> Clients </th>
+            }
+            else
+            {
+                <th> No client record exist </th>
+            }
+        </tr>
+        @foreach (var item1 in Model.Clients)
+        {
+            <tr>
+                <td>
+                     @Html.DisplayFor(modelItem => item1.FirstName)
+                    
+                </td>
+            </tr>
+        }
+    </table>
+}
