@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,12 +23,33 @@ namespace Lab4.Controllers
         // GET: Brokerages
         public async Task<IActionResult> Index(string? ID)
         {
-            var viewModel = new BrokerageViewModel
+            /*var viewModel = new BrokerageViewModel
             {
                 Brokerages = await _context.Brokerages.ToListAsync()
                   
             };
-              return View(viewModel);
+*/
+
+            var viewModel = new BrokerageViewModel
+            {
+                Brokerages = await _context.Brokerages
+                  .Include(i => i.Subscriptions)
+                  .AsNoTracking()
+                  .OrderBy(i => i.Id)
+                  .ToListAsync()
+
+        };
+
+            if (ID != null)
+            {
+                /*select linq query */
+                var clients = from cust in _context.Subscriptions
+                where cust.BrokerageId == ID
+                select cust.Client;
+                viewModel.Clients = clients;
+            }
+
+            return View(viewModel);
 
         }
 
