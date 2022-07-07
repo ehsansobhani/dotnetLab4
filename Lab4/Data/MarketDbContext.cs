@@ -17,11 +17,19 @@ namespace Lab4.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
-                modelBuilder.Entity<Client>().ToTable("clients");
-                modelBuilder.Entity<Brokerage>().ToTable("brokerages");
-                modelBuilder.Entity<Subscription>().ToTable("subscriptions");
-                /* composite key decleration */
-                modelBuilder.Entity<Subscription>().HasKey(c => new { c.ClientId, c.BrokerageId });
+            modelBuilder.Entity<Client>().ToTable("clients");
+            modelBuilder.Entity<Client>().HasMany(b => b.Subscriptions).WithOne(b => b.Client);
+
+            modelBuilder.Entity<Brokerage>().ToTable("brokerages");
+            modelBuilder.Entity<Brokerage>().HasMany(b => b.Subscriptions).WithOne(b => b.Brokerage);
+
+            modelBuilder.Entity<Subscription>().ToTable("subscriptions");
+            
+            modelBuilder.Entity<Subscription>().HasOne(b => b.Brokerage).WithMany(b => b.Subscriptions).HasForeignKey(b => b.BrokerageId);
+            modelBuilder.Entity<Subscription>().HasOne(b => b.Client).WithMany(b => b.Subscriptions).HasForeignKey(b => b.ClientId);
+
+            /* composite key decleration */
+            modelBuilder.Entity<Subscription>().HasKey(c => new { c.ClientId, c.BrokerageId });
            
 
         }
